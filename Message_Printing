@@ -1,0 +1,39 @@
+; Rewrite of my bad code for "Message Printing"
+section .data
+    newline: db 0Ah
+        cmd: db "/bin/sh", 0
+       note: db "You have been hacked!", 0
+    lennote: equ $-note
+
+section .text
+
+        global _start
+
+
+_start:
+
+        ; File write
+        mov rax,1
+        mov rdi,1
+        mov rsi, note
+        mov rdx, lennote
+        syscall
+
+        ; Write Newline
+        mov rax, 1
+        mov rdi, 1
+        mov rsi, newline
+        mov rdx, 1
+        syscall
+
+        ; Execute /bin/sh
+        mov rax, 59
+        mov rdi, cmd
+        xor rsi, rsi
+        xor rdx, rdx
+        syscall
+
+        ; Exit
+        mov rax, 60
+        xor rdi, rdi
+        syscall
